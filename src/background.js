@@ -2,19 +2,6 @@ try {
     const ANKI_CONNECT_URL = 'http://localhost:8765'
     console.log(`[Jisho-Anki] Background running!`);
 
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-        chrome.tabs.get(tabId, (current) => {
-            if (current.url.includes('jisho.org') && changeInfo.status === 'complete') {
-                chrome.tabs.executeScript(null, { // Should this use tabId instead?
-                    file: './src/foreground.js'
-                }, () => {
-                    console.log('Injected foreground script.');
-                    // What if we put our onConnect#addListener event here?
-                });
-            }
-        });
-    });
-
     chrome.extension.onConnect.addListener((port) => {
         console.log(`Connected to port: ${port.name}`);
         if (port.name === 'jisho-client') {
